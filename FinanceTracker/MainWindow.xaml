@@ -1,0 +1,160 @@
+﻿<Window x:Class="FinanceTracker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Finance Tracker" Height="500" Width="900" UseLayoutRounding="False" WindowStartupLocation="CenterScreen" MinHeight="500" MinWidth="900" ResizeMode="CanMinimize">
+    <Grid>
+        <TabControl BorderThickness="0">
+            <TabItem x:Name="tabOverview" Header="Overview" ToolTip="An overview of your monthly savings and expenses" Margin="4,0,-4,0">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem x:Name="tabSavings" Header="Savings" ToolTip="Track your monthly savings" Margin="6,0,-6,0">
+                <Grid Background="#FFE5E5E5">
+                    <ComboBox x:Name="savingsYearComboBox" HorizontalAlignment="Left" Margin="75,26,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.558,0.682" IsReadOnly="True" DropDownClosed="savingsYearSelected" />
+                    <Label Content="Year" HorizontalAlignment="Left" Margin="37,26,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="savingsMonthCB" HorizontalAlignment="Left" Margin="332,391,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.558,0.682" IsReadOnly="True">
+                        <ComboBoxItem Content="January"/>
+                        <ComboBoxItem Content="February"/>
+                        <ComboBoxItem Content="March"/>
+                        <ComboBoxItem Content="April"/>
+                        <ComboBoxItem Content="May"/>
+                        <ComboBoxItem Content="June"/>
+                        <ComboBoxItem Content="July"/>
+                        <ComboBoxItem Content="August"/>
+                        <ComboBoxItem Content="September"/>
+                        <ComboBoxItem Content="October"/>
+                        <ComboBoxItem Content="November"/>
+                        <ComboBoxItem Content="December"/>
+                    </ComboBox>
+                    <Label Content="My savings as of " HorizontalAlignment="Left" Margin="226,387,0,0" VerticalAlignment="Top"/>
+                    <Label Content="1st were" HorizontalAlignment="Left" Margin="438,386,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.763,0.462"/>
+                    <TextBox x:Name="savingsAmountTextBox" HorizontalAlignment="Left" Height="23" Margin="497,390,0,0" VerticalAlignment="Top" Width="75" MaxLength="256" HorizontalContentAlignment="Right" />
+                    <Button x:Name="savingsSubmitButton" Content="Submit" HorizontalAlignment="Left" Margin="609,393,0,0" VerticalAlignment="Top" Width="75" ToolTip="Submit your monthly savings" RenderTransformOrigin="0.027,-0.35" Click="savingsMonthlySubmit"/>
+                    <DataGrid x:Name="savingsGrid" HorizontalAlignment="Left" Margin="75,57,0,0" VerticalAlignment="Top" Height="312" Width="745">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type TextBlock}" x:Key="RightAligElementStyle">
+                                <Setter Property="TextAlignment" Value="Right"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding date}" Header="Date" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding amount}" Header="Savings" IsReadOnly="True" ElementStyle="{StaticResource RightAligElementStyle}"/>
+                            <DataGridTextColumn Binding="{Binding difference}" Header="Difference" IsReadOnly="True" ElementStyle="{StaticResource RightAligElementStyle}"/>
+                            <DataGridTemplateColumn Header="Expenses" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="ViewMontlyExpenses">Expenses</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Bill Payments" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="90" ToolTip="Log your bill payments and see payment history" Margin="8,0,-8,0">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="paymentsGrid" HorizontalAlignment="Left" Margin="75,57,0,0" VerticalAlignment="Top" Height="312" Width="745" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type TextBlock}" x:Key="RightAligElementStyle">
+                                <Setter Property="TextAlignment" Value="Right"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn ClipboardContentBinding="{x:Null}" Header="[ ! ]" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding imagePath}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding creditor}" Header="Creditor" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding dateDue}" Header="Due Date" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding amount, UpdateSourceTrigger=LostFocus}" ClipboardContentBinding="{x:Null}" Header="Amount" ElementStyle="{StaticResource RightAligElementStyle}"/>
+                            <DataGridTemplateColumn Header="Date Paid">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding date, StringFormat='MM/dd/yyyy', UpdateSourceTrigger=LostFocus}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding date, StringFormat='MM/dd/yyyy', UpdateSourceTrigger=LostFocus}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Log payment" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="LogPayment">Log payment</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <ComboBox x:Name="paymentDisplayCB" HorizontalAlignment="Left" Margin="75,30,0,0" VerticalAlignment="Top" Width="138" DropDownClosed="PaymentDropdownSelected">
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="Upcoming"/>
+                    </ComboBox>
+                    <Button x:Name="paymentViewHistory" Content="View Payment History" HorizontalAlignment="Left" Margin="387,397,0,0" VerticalAlignment="Top" Width="123" Height="25" Click="PaymentHistoryButtonClick"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Expenses" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="66" ToolTip="Log monthly expenses" Margin="10,0,-10,0">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="expensesGrid" HorizontalAlignment="Left" Margin="75,57,0,0" VerticalAlignment="Top" Height="312" Width="745">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type TextBlock}" x:Key="RightAligElementStyle">
+                                <Setter Property="TextAlignment" Value="Right"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding date}" Header="Date"/>
+                            <DataGridTextColumn Binding="{Binding name}" Header="Expense Name"/>
+                            <DataGridTextColumn Binding="{Binding amount}" Header="Amount" ElementStyle="{StaticResource RightAligElementStyle}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBox x:Name="expensesNameTextBox" HorizontalAlignment="Left" Height="23" Margin="338,399,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="152" MaxLength="45" ToolTip="Expense name" TabIndex="1"/>
+                    <Label Content="I spent" HorizontalAlignment="Left" Margin="184,396,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="expensesDollarTextBox" HorizontalAlignment="Left" Height="23" Margin="235,399,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68" ToolTip="Dollar amount" TabIndex="0"/>
+                    <Label Content="for" HorizontalAlignment="Left" Margin="308,396,0,0" VerticalAlignment="Top"/>
+                    <Label Content="on" HorizontalAlignment="Left" Margin="495,396,0,0" VerticalAlignment="Top"/>
+                    <DatePicker x:Name="expensesDatePicker" HorizontalAlignment="Left" Margin="524,399,0,0" VerticalAlignment="Top" TabIndex="2"/>
+                    <Button x:Name="expensesAddButton" Content="Add Expense" HorizontalAlignment="Left" Margin="641,399,0,0" VerticalAlignment="Top" Width="83" Height="23" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="AddNewExpense" TabIndex="3"/>
+                    <Label Content="My Expenses for this month*:" HorizontalAlignment="Left" Margin="75,31,0,0" VerticalAlignment="Top" ToolTip="For other months see the savings tab"/>
+                    <Label x:Name="expenseTotalLabel" Content="" HorizontalAlignment="Left" Margin="234,31,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Creditor Info" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="90" ToolTip="Contact information on your creditors" Margin="12,0,-12,0">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="creditorGrid" HorizontalAlignment="Left" Margin="75,57,0,0" VerticalAlignment="Top" Height="312" Width="745">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type TextBlock}" x:Key="RightAligElementStyle">
+                                <Setter Property="TextAlignment" Value="Right"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding creditorName}" Header="Name" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding accountNumber}" Header="Account" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding phone}" Header="Phone" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding website}" Header="Website" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding dayDue}" Header="Day Due" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Update" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="creditorUpdate">Update</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Remove" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="creditorRemove">Remove</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="creditorAddNewButton" Content="Add New Creditor" HorizontalAlignment="Left" Margin="386,398,0,0" VerticalAlignment="Top" TabIndex="1" Width="120" Click="addNewCreditor" Height="20"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

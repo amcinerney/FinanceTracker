@@ -1,0 +1,45 @@
+﻿<Window x:Name="paymentHistoryMainWindow" x:Class="FinanceTracker.PaymentsHistoryForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Payment History" Height="500" Width="900">
+    <Grid Background="#FFE5E5E5">
+        <DataGrid x:Name="paymentHistoryGrid" HorizontalAlignment="Left" Margin="75,57,0,0" VerticalAlignment="Top" Height="312" Width="745">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type TextBlock}" x:Key="RightAligElementStyle">
+                    <Setter Property="TextAlignment" Value="Right"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding creditor}" Header="Creditor"/>
+                <DataGridTextColumn Binding="{Binding amount}" Header="Amount Paid"  ElementStyle="{StaticResource RightAligElementStyle}"/>
+                <DataGridTextColumn Binding="{Binding date}" Header="Date Paid"  ElementStyle="{StaticResource RightAligElementStyle}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="phCloseButton" Content="Close" HorizontalAlignment="Left" Margin="425,410,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.133,0.55" Click="PHCloseButtonClick"/>
+        <Label Content="Year :" HorizontalAlignment="Left" Margin="75,26,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="phYearCB" HorizontalAlignment="Left" Margin="119,30,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.208,-0.909" DropDownClosed="OptionSelected"/>
+        <Label Content="Month :" HorizontalAlignment="Left" Margin="244,26,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.237,0.154"/>
+        <ComboBox x:Name="phMonthCB" HorizontalAlignment="Left" Margin="300,30,0,0" VerticalAlignment="Top" Width="120" DropDownClosed="OptionSelected">
+            <ComboBoxItem Content="All"/>
+            <ComboBoxItem Content="January"/>
+            <ComboBoxItem Content="February"/>
+            <ComboBoxItem Content="March"/>
+            <ComboBoxItem Content="April"/>
+            <ComboBoxItem Content="May"/>
+            <ComboBoxItem Content="June"/>
+            <ComboBoxItem Content="July"/>
+            <ComboBoxItem Content="August"/>
+            <ComboBoxItem Content="September"/>
+            <ComboBoxItem Content="October"/>
+            <ComboBoxItem Content="November"/>
+            <ComboBoxItem Content="December"/>
+        </ComboBox>
+        <Label Content="Creditor :" HorizontalAlignment="Left" Margin="425,26,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="phCreditorCB" HorizontalAlignment="Left" Margin="489,30,0,0" VerticalAlignment="Top" Width="120" DropDownClosed="OptionSelected"/>
+        <Label Content="Total :" HorizontalAlignment="Left" Margin="75,374,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="phTotalLabel" Content="" HorizontalAlignment="Left" Margin="117,374,0,0" VerticalAlignment="Top"/>
+        <Label Content="Average :" HorizontalAlignment="Left" Margin="227,374,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.974,0.885"/>
+        <Label x:Name="phAverageLabel" Content="" HorizontalAlignment="Left" Margin="286,374,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
